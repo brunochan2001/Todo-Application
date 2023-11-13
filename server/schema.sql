@@ -1,0 +1,45 @@
+CREATE DATABASE todo_list;
+
+USE todo_list;
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255)
+);
+
+CREATE TABLE todos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255),
+    completed BOOLEAN DEFAULT false,
+    user_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE shared_todos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    todo_id INT,
+    user_id INT,
+    shared_with_id INT,
+    FOREIGN KEY (todo_id) REFERENCES todos(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (shared_with_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Insert two users into the users table
+INSERT INTO users (name, email, password) VALUES ("Beto",
+"user1@example.com",
+"password1");
+INSERT INTO users (name, email, password) VALUES ("Alberto",
+"user2@example.com",
+"password2");
+
+-- Insert todos into the todos table, associated with the first user
+INSERT INTO todos (title, user_id) VALUES 
+("Go for a morning run", 1), 
+("Work on project presentation", 1), 
+("Go grocery shopping", 1),
+("Read 30 pages of book", 1),
+("Cook dinner for family", 1),
+("Practive yoga", 1);
