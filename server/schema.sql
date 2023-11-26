@@ -43,3 +43,13 @@ INSERT INTO todos (title, user_id) VALUES
 ("Read 30 pages of book", 1),
 ("Cook dinner for family", 1),
 ("Practive yoga", 1);
+
+-- Share todo 1 of user 1 with user 2
+INSERT INTO shared_todos (todo_id, user_id, shared_with_id)
+VALUES (1,1,2);
+
+-- Get todos including shared todos by id
+SELECT todos.*, shared_todos.shared_with_id
+FROM todos
+LEFT JOIN shared_todos ON todos.id = shared_todos.todo_id
+WHERE todos.user_id = [user_id] OR shared_todos.shared_with_id = [user_id];

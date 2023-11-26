@@ -1,0 +1,21 @@
+{
+  "name": "Todo-list-reactnative",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/brunochan2001/Todo-Application.git",
+  "author": "brunochan2001 <brunoacy12@gmail.com>",
+  "license": "MIT",
+  "type": "CommonJS",
+  "scripts": {
+    "dev": "npx nodemon index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mysql2": "^3.6.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
