@@ -5,7 +5,7 @@
   "repository": "https://github.com/brunochan2001/Todo-Application.git",
   "author": "brunochan2001 <brunoacy12@gmail.com>",
   "license": "MIT",
-  "type": "CommonJS",
+  "type": "commonjs",
   "scripts": {
     "dev": "npx nodemon index.js"
   },
