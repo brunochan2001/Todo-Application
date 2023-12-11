@@ -1,10 +1,13 @@
+import { SafeAreaView, StyleSheet, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { TaskList } from "./components";
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <SafeAreaView></SafeAreaView>
+      <SafeAreaView style={styles.container}>
+        <TaskList />
+      </SafeAreaView>
       <StatusBar style="auto" />
     </View>
   );
@@ -13,8 +16,6 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: "#E9E9EF",
   },
 });
