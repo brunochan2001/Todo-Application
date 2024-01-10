@@ -3,18 +3,7 @@ import { FlatList, StyleSheet, Text } from "react-native";
 import { TaskListItem } from "../TaskListItem";
 import { getTodoListById } from "../../services/todoList";
 
-export const TaskList = () => {
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    handleGetTodoList();
-  }, []);
-
-  const handleGetTodoList = async () => {
-    const response = await getTodoListById(1);
-    setData(response.data);
-  };
-
+export const TaskList = ({ data, setData }) => {
   const handleClearTodo = (id) => {
     setData(data.filter((todo) => todo.id !== id));
   };

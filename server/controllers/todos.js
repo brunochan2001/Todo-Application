@@ -42,14 +42,22 @@ const getSharedTodoById = async (req, res = response) => {
   try {
     const id = req.params.id;
     const connection = dbConnection();
-    const [rows] = await connection.promise().query(
-      `
-      SELECT * FROM shared_todos WHERE todo_id =?`,
-      [id]
-    );
-    const shared_todo = rows[0];
-    if (shared_todo) {
-      res.status(200).json({ ok: true, data: shared_todo });
+    const [rows] = await connection
+      .promise()
+      .query(`SELECT * FROM shared_todos WHERE todo_id = ?`, [id]);
+    const sharedTodo = rows[0];
+    const [authorRows] = await connection
+      .promise()
+      .query(`SELECT * FROM users WHERE id = ?`, [sharedTodo.user_id]);
+    const [sharedWithRows] = await connection
+      .promise()
+      .query(`SELECT * FROM users WHERE id = ?`, [sharedTodo.shared_with_id]);
+    const author = authorRows[0];
+    const sharedWith = sharedWithRows[0];
+    if (sharedTodo) {
+      res
+        .status(200)
+        .json({ ok: true, data: { author, shared_with: sharedWith } });
     } else {
       res
         .status(404)
@@ -157,9 +165,16 @@ const toggleCompleted = async (req, res = response) => {
 const shareTodo = async (req, res = response) => {
   const todo_id = req.body.todo_id;
   const user_id = req.body.user_id;
-  const shared_with_id = req.body.shared_with_id;
+  const email = req.body.email;
+
   try {
     const connection = dbConnection();
+
+    const [shared_with] = await connection
+      .promise()
+      .query(`SELECT * FROM users WHERE email = ?`, [email]);
+
+    const shared_with_id = shared_with[0].id;
     const [result] = await connection.promise().query(
       `INSERT INTO shared_todos (todo_id, user_id, shared_with_id)
        VALUES (?,?,?)`,

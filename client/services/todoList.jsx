@@ -43,3 +43,51 @@ export const putTodoById = async (id, completed) => {
     console.log(error);
   }
 };
+
+export const getTodoSharedById = async (id) => {
+  try {
+    const response = await fetch(
+      `${REACT_APP_BACKEND_URL}/todos/shared-todo/${id}`
+    );
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const postSharedTodo = async (todo_id, user_id, email) => {
+  const body = { todo_id: todo_id, user_id, email: email };
+
+  try {
+    const response = await fetch(`${REACT_APP_BACKEND_URL}/todos/shared-todo`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify(body),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const postCreateTodo = async (user_id, title) => {
+  const body = { title, user_id };
+
+  try {
+    const response = await fetch(`${REACT_APP_BACKEND_URL}/todos/create`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify(body),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};

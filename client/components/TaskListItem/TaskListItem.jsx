@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   Pressable,
   StyleSheet,
@@ -8,6 +8,9 @@ import {
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { deleteTodoById, putTodoById } from "../../services/todoList";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { SharedTodoModal } from "../SharedTodoModal";
+import { TodoContentModal } from "../TodoContentModal";
 
 function CheckMark({ id, handleToggleTodo, completed }) {
   const handleToggle = async () => {
@@ -34,6 +37,18 @@ export const TaskListItem = ({
   handleClearTodo,
 }) => {
   const [isDeleteActive, setIsDeleteActive] = useState(false);
+  const bottomSheetModalRef = useRef(null);
+  const sharedBottomSheetRef = useRef(null);
+  const snapPoints = ["25%", "48%", "75%"];
+  const snapPointsShared = ["40%"];
+
+  const handlePresentModal = () => {
+    bottomSheetModalRef.current?.present();
+  };
+
+  const handlePresentShared = () => {
+    sharedBottomSheetRef.current?.present();
+  };
 
   const handleDeleteTodo = async () => {
     await deleteTodoById(id);
@@ -56,15 +71,45 @@ export const TaskListItem = ({
         <Text style={styles.text}>{title}</Text>
       </View>
       {shared_with_id !== null ? (
-        <Feather name="users" size={20} color="#383839" />
+        <Feather
+          onPress={handlePresentShared}
+          name="users"
+          size={20}
+          color="#383839"
+        />
       ) : (
-        <Feather name="share" size={20} color="#383839" />
+        <Feather
+          onPress={handlePresentModal}
+          name="share"
+          size={20}
+          color="#383839"
+        />
       )}
       {isDeleteActive && (
         <Pressable onPress={handleDeleteTodo} style={styles.deleteButton}>
           <Text style={{ color: "white", fontWeight: "bold" }}>x</Text>
         </Pressable>
       )}
+      <BottomSheetModal
+        ref={sharedBottomSheetRef}
+        snapPoints={snapPointsShared}
+        backgroundStyle={{ borderRadius: 50, borderWidth: 4 }}
+      >
+        <SharedTodoModal
+          id={id}
+          title={title}
+          shared_with_id={shared_with_id}
+          completed={completed}
+        />
+      </BottomSheetModal>
+      <BottomSheetModal
+        ref={bottomSheetModalRef}
+        snapPoints={snapPoints}
+        index={2}
+        backgroundStyle={{ borderRadius: 50, borderWidth: 4 }}
+      >
+        <TodoContentModal id={id} title={title} />
+      </BottomSheetModal>
     </TouchableOpacity>
   );
 };
