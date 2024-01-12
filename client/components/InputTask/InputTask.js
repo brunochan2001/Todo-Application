@@ -91,7 +91,12 @@ export const InputTask = ({ data, setData }) => {
             <RenderEmoji emoji="🏃🏻‍♂️" />
           </Animated.View>
         )}
-        <View style={styles.inputContainer}>
+        <View
+          style={{
+            ...styles.inputContainer,
+            marginBottom: showEmojies ? 100 : 0,
+          }}
+        >
           <TextInput
             style={styles.containerTextInput}
             placeholder="Write a new task"
