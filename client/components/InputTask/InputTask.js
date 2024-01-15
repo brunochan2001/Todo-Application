@@ -71,6 +71,7 @@ export const InputTask = ({ data, setData }) => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={100}
     >
       <View style={styles.container}>
         {showEmojies && (
@@ -91,12 +92,7 @@ export const InputTask = ({ data, setData }) => {
             <RenderEmoji emoji="🏃🏻‍♂️" />
           </Animated.View>
         )}
-        <View
-          style={{
-            ...styles.inputContainer,
-            marginBottom: showEmojies ? 100 : 0,
-          }}
-        >
+        <View style={styles.inputContainer}>
           <TextInput
             style={styles.containerTextInput}
             placeholder="Write a new task"
