@@ -186,6 +186,47 @@ const shareTodo = async (req, res = response) => {
   }
 };
 
+const createUser = async (req, res = response) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  const name = req.body.name;
+
+  try {
+    const connection = dbConnection();
+    const [result] = await connection.promise().query(
+      `INSERT INTO users (name, email, password)
+        VALUES (?, ?, ?)`,
+      [name, email, password]
+    );
+    const usersId = result.insertId;
+    res.status(201).json({ ok: true, data: { user_id: usersId } });
+  } catch (error) {
+    res.status(500).json({ ok: false, error: "Error al crear todo" });
+  }
+};
+
+const signInUser = async (req, res = response) => {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  try {
+    const connection = dbConnection();
+    const [result] = await connection
+      .promise()
+      .query("SELECT * FROM users WHERE email = ? AND password = ?", [
+        email,
+        password,
+      ]);
+    if (result.length > 0) {
+      res.status(201).json({ ok: true, data: result[0] });
+    } else {
+      res.status(401).json({ ok: false, error: "Credenciales incorrectas" });
+    }
+  } catch (error) {
+    res.status(500).json({ ok: false, error: "Error al crear todo" });
+  }
+};
+
 module.exports = {
   getTodosById,
   getUserByEmail,
@@ -195,4 +236,6 @@ module.exports = {
   deleteTodo,
   shareTodo,
   toggleCompleted,
+  createUser,
+  signInUser,
 };
