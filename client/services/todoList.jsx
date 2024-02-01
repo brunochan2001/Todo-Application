@@ -91,3 +91,39 @@ export const postCreateTodo = async (user_id, title) => {
     console.log(error);
   }
 };
+
+export const postSignIn = async (email, password) => {
+  const body = { email, password };
+
+  try {
+    const response = await fetch(`${REACT_APP_BACKEND_URL}/user/sign-in`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify(body),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const createUser = async (email, name, password) => {
+  const body = { email, name, password };
+
+  try {
+    const response = await fetch(`${REACT_APP_BACKEND_URL}/user/create`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify(body),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};

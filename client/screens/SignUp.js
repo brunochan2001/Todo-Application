@@ -6,57 +6,70 @@ import {
   Text,
   TextInput,
   View,
+  Alert
 } from "react-native";
+import { createUser } from "../services/todoList";
 
-export const SingUpSignIn = ({ navigation }) => {
-  const [emailSignIn, setEmailSignIn] = useState("");
-  const [emailSignUp, setEmailSignUp] = useState("");
+export const SignUp = ({ navigation }) => {
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleSubmit = () => {
-    navigation.navigate("Todo List", { id: 2 });
+  const resetForm = () => {
+    setName("")
+    setEmail("");
+    setPassword("");
   };
 
-  const handleChangeEmailSignIn = (text) => {
-    setEmailSignUp("");
-    setEmailSignIn(text);
-  };
-
-  const handleChangeEmailSignUp = (text) => {
-    setEmailSignIn("");
-    setEmailSignUp(text);
+  const handleSubmit = async () => {
+    if (name === "" || email === "" || password === "") {
+      return;
+    } else {
+      const response = await createUser(email, name, password);
+      if (response.error) {
+      } else {
+        Alert.alert(
+          "Congratulations 🎉",
+          `Your new account is ready`,
+          [{ text: "Okay" }]
+        );
+        resetForm()
+        navigation.navigate("Home");
+      }
+    }
   };
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={{ flex: 1 }}
     >
       <View style={styles.container}>
-        <View style={styles.contentContainer}>
-          <Text style={styles.title}>Sign In</Text>
-          <Text style={styles.description}>Sign in to continue</Text>
-          <TextInput
-            style={styles.containerTextInput}
-            placeholder="Write your email"
-            scrollEnabled={true}
-            onChangeText={(text) => handleChangeEmailSignIn(text)}
-            defaultValue={emailSignIn}
-          />
-          <Pressable onPress={handleSubmit} style={styles.button}>
-            <Text style={styles.textButton}>Sign In</Text>
-          </Pressable>
-        </View>
         <View style={styles.contentContainer}>
           <Text style={styles.title}>Sign Up</Text>
           <Text style={styles.description}>Sign up to continue</Text>
           <TextInput
             style={styles.containerTextInput}
-            placeholder="Email"
+            placeholder="Write your name"
             scrollEnabled={true}
-            onChangeText={(text) => handleChangeEmailSignUp(text)}
-            defaultValue={emailSignUp}
+            onChangeText={setName}
+            defaultValue={name}
           />
-          <Pressable onPress={() => {}} style={styles.button}>
+          <TextInput
+            style={styles.containerTextInput}
+            placeholder="Write your email"
+            scrollEnabled={true}
+            onChangeText={setEmail}
+            defaultValue={email}
+          />
+          <TextInput
+            style={styles.containerTextInput}
+            placeholder="Write your password"
+            scrollEnabled={true}
+            onChangeText={setPassword}
+            defaultValue={password}
+            secureTextEntry={true}
+          />
+          <Pressable onPress={handleSubmit} style={styles.button}>
             <Text style={styles.textButton}>Sign Up</Text>
           </Pressable>
         </View>
@@ -67,10 +80,8 @@ export const SingUpSignIn = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    display: "flex",
-    justifyContent: "center",
-    flex: 1,
-    gap: 20,
+    height: "100%",
+    paddingTop: 30
   },
   contentContainer: {
     display: "flex",
@@ -113,4 +124,5 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "600",
   },
+  textBottom: { position: "absolute", bottom: 20, width: "100%" },
 });

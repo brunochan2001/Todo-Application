@@ -17,7 +17,7 @@ const getTodosById = async (req, res = response) => {
     if (todosById.length) {
       res.status(200).json({ ok: true, data: todosById });
     } else {
-      res.status(404).json({ ok: false, error: "No existe todos por el id" });
+      res.status(404).json({ ok: true, data: [] });
     }
   } catch (error) {
     res.status(500).json({ ok: false, error: "Error al obtener todos" });
@@ -201,7 +201,7 @@ const createUser = async (req, res = response) => {
     const usersId = result.insertId;
     res.status(201).json({ ok: true, data: { user_id: usersId } });
   } catch (error) {
-    res.status(500).json({ ok: false, error: "Error al crear todo" });
+    res.status(500).json({ ok: false, error: "Error al crear usuario" });
   }
 };
 
@@ -223,7 +223,7 @@ const signInUser = async (req, res = response) => {
       res.status(401).json({ ok: false, error: "Credenciales incorrectas" });
     }
   } catch (error) {
-    res.status(500).json({ ok: false, error: "Error al crear todo" });
+    res.status(500).json({ ok: false, error: "Error al iniciar sesion" });
   }
 };
 
